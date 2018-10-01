@@ -69,7 +69,8 @@ var myStyles = React.StyleSheet.create({
     fontSize: 18,
     padding: 10,
     fontWeight: 'bold',
-  }
+  },
+
 })
 
 module.exports = myStyles;
