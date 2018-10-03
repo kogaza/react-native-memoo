@@ -2,23 +2,11 @@ var React = require('react-native');
 
 var myStyles = React.StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#2c3e50',
-    },
-    link: {
-        padding: 15,
-        borderBottomWidth: 2,
-        borderBottomColor: '#eee',
-    },
-    logoContainer: {
-        display: 'flex',
+        flex: 1, 
+        justifyContent: "flex-end",
         alignItems: 'center',
-        margin: 10,
+        paddingBottom: 15,
     },
-    text: {
-        color: 'red',
-        fontSize: 20,
-    }
 })
 
 module.exports = myStyles;

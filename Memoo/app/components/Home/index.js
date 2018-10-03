@@ -2,22 +2,16 @@ import React, { Component } from "react";
 import {
   Text,
   View,
-  TouchableOpacity,
   Alert,
   Button,
-  Image,
-  ImageBackground,
-  Animated
 } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { createStackNavigator } from 'react-navigation';
 import ShowImage from '../ShowImage';
-import CardFlip from 'react-native-card-flip';
-
+import Options from '../Options';
+import Sidebar from "../Sidebar";
 
 var styles = require('./styles');
 
-class Home extends Component {
+export default class Home extends Component {
   constructor(props) {
     super(props);
 
@@ -25,26 +19,49 @@ class Home extends Component {
       newGame: false,
       elements: [],
       numberOfFields: 12,
+      levels: [
+        {
+          id: 0,
+          name: 'EASY',
+          numberOfFields: 8
+        },
+        {
+          id: 1,
+          name: 'MEDIUM',
+          numberOfFields: 12
+        },
+        {
+          id: 2,
+          name: 'HARD',
+          numberOfFields: 24
+        }
+      ],
       numberOfClicks: 0,
       attempts: 0,
-      imagesType: 'fruits'
+      imagesType: 'fruits',
+      show: 'game',
+      icons: [
+        {
+          id: 0,
+          name: 'fruits',
+          img: require('../../images/icons/fruits.png')
+        },
+        {
+          id: 1,
+          name: 'colors',
+          img: require('../../images/icons/colors.png')
+        },
+        {
+          id: 2,
+          name: 'marks',
+          img: require('../../images/icons/marks.png')
+        },
+      ]
     }
   }
   componentDidMount() {
     this.initializeGame();
   }
-
-  static navigationOptions = ({ navigation }) => ({
-    headerRight: (
-      <Image
-        style={{
-          width: 100,
-          height: 40,
-        }}
-        source={require('../../images/memoo-logo.png')} />
-    ),
-    title: 'Hello!',
-  })
 
   initializeGame = () => {
     const { numberOfFields } = this.state;
@@ -53,8 +70,8 @@ class Home extends Component {
     let imageId;
     let element = {};
     let i = 0;
-    while (i <= 11) {
-      randomNumber = Math.floor((Math.random() * 6) + 1);
+    while (i <= numberOfFields - 1) {
+      randomNumber = Math.floor((Math.random() * (numberOfFields / 2)) + 1);
       if (numbers.filter(nr => nr == randomNumber).length < 2) {
         numbers.push(randomNumber);
         imageId = numbers[i++];
@@ -72,7 +89,7 @@ class Home extends Component {
       numberOfClicks: 0,
       newGame: false,
       attempts: 0,
-    }, () => console.log(this.state));
+    });
   }
 
   resetGame = () => {
@@ -96,15 +113,6 @@ class Home extends Component {
     )
   }
 
-  renderIcon = (row, col) => {
-    var value = this.state.gameState[row][col];
-    switch (value) {
-      case 1: return <Icon name="times" style={[styles.tileIcon, styles.tileX]} />;
-      case -1: return <Icon name="circle" style={[styles.tileIcon, styles.tileO]} />;
-      default: return <View />
-    }
-  }
-
   hideElements = () => {
     const { numberOfClicks, elements, attempts } = this.state;
     if (numberOfClicks >= 2) {
@@ -112,7 +120,6 @@ class Home extends Component {
         let newElements = elements.map(x => {
           return {
             ...x,
-            // visible: true,
             clicked: false
           };
         });
@@ -142,22 +149,54 @@ class Home extends Component {
 
   showImage = (id) => {
     const { elements, numberOfClicks } = this.state;
-    // if (numberOfClicks < 2 && elements[id].available == true) {
-    //   elements[id].visible = true;
     elements[id].clicked = true;
     this.setState({
       elements,
       numberOfClicks: numberOfClicks + 1
-      // }, () => console.log(this.state))
     }, () => this.hideElements())
-    // }
   }
 
+  showOptions = (arg) => {
+    let show = arg;
+    (show == 'game') ? this.initializeGame() : null;
+    this.setState({
+      show
+    })
+  }
+
+  changeImages = (icon) => {
+    let imagesType = icon;
+    this.setState({
+      imagesType
+    })
+  }
+  changeLevel = (level) => {
+    let numberOfFields = level;
+    this.setState({
+      numberOfFields
+    })
+  }
 
   render() {
-    const widthEl = 100;
-    const heightEl = 80;
-    const { numberOfClicks, imagesType, newGame } = this.state;
+    let widthEl = 0;
+    let heightEl = 0;
+    const { numberOfClicks, imagesType, newGame, show, numberOfFields } = this.state;
+    switch (numberOfFields) {
+      case 8:
+        widthEl = 120;
+        heightEl = 80;
+        break;
+      case 12:
+        widthEl = 100;
+        heightEl = 80;
+        break;
+      case 24:
+        widthEl = 75;
+        heightEl = 55;
+        break;
+      default:
+        break;
+    }
 
     const allElements = this.state.elements.map((el, i) => {
       return (
@@ -177,58 +216,76 @@ class Home extends Component {
         />
       )
     })
-    this.allElements = allElements;
+    const mainField = (show == 'game') ?
+      <View style={styles.board}>
+        {allElements}
+      </View>
+      :
+      <Options
+        changeImages={(icon) => this.changeImages(icon)}
+        changeLevel={(level) => this.changeLevel(level)}
+        icons={this.state.icons}
+        imagesType={this.state.imagesType}
+        numberOfFields={this.state.numberOfFields}
+        levels={this.state.levels}
+      />
+
+    const header = (show == 'game') ?
+      <View style={styles.headersElements}>
+        <View style={styles.showOptions}>
+          <Button
+            title="Show options"
+            onPress={() => this.showOptions('options')}
+            color="#1d8ed1"
+          ></Button>
+        </View>
+        <View style={styles.attemptsContainer}>
+          <Text style={styles.attempts}>
+            Attempts: {this.state.attempts}
+          </Text>
+        </View>
+      </View>
+      :
+      <View style={styles.headersElements}>
+        <View style={styles.showOptions}>
+          <Button
+            title="Back to game"
+            onPress={() => this.showOptions('game')}
+            color="#1d8ed1"
+          ></Button>
+        </View>
+        <View style={styles.attemptsContainer}></View>
+      </View>
+    const newGameButton = (show == 'game') ?
+      <View style={styles.newGameContainer}>
+        <Button
+          title='New Game'
+          onPress={this.onNewGamePress}
+          color="#1d8ed1"
+        />
+      </View>
+      :
+      <View style={styles.newGameContainer}>
+      </View>
+
+
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.changeIcons}>
-            <Button title="Change icons" onPress={() => this.props.navigation.navigate('options')}></Button>
-          </View>
-          <View style={styles.attemptsContainer}>
-            <Text style={styles.attempts}>
-              Attempts: {this.state.attempts}
-            </Text>
-          </View>
+        <View style={styles.sidebar}>
+          <Sidebar />
         </View>
-        <View style={styles.board}>
-          {allElements}
+        <View style={styles.header}>
+          {header}
+        </View>
+        <View style={styles.mainField}>
+          {mainField}
 
         </View>
         <View style={styles.newGame}>
-          <Button title='New Game' onPress={this.onNewGamePress} />
+          {newGameButton}
         </View>
       </View>
 
     );
   }
 }
-
-class Options extends Component {
-
-  static navigationOptions = ({ navigation }) => ({
-    headerRight: (
-      <Image
-        style={{
-          width: 100,
-          height: 40,
-        }}
-        source={require('../../images/memoo-logo.png')} />
-    ),
-    title: 'Options',
-  })
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.question}>
-          <Text style={styles.questionText}>What pictures you want to play?</Text>
-        </View>
-      </View>
-    );
-  }
-}
-
-export default createStackNavigator({
-  home: Home,
-  options: Options
-});

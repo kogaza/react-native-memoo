@@ -3,28 +3,45 @@ var React = require('react-native');
 var myStyles = React.StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFEB4",
+    backgroundColor: "#1d8ed1",
     justifyContent: 'space-between'
   },
+
+  sidebar: {
+    flex: 5,
+  },
+  header: {
+    flex: 4,
+    borderBottomWidth: 1,
+    borderColor: '#1d8ed1',
+    backgroundColor: "#FFFEB4",
+  },
+  mainField: {
+    flex: 21,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: "#FFFEB4",
+  },
   board: {
-    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  // elementContainer: {
-  //   width: widthEl,
-  //   height: heightEl,
-  //   margin: '1%',
-  //   backgroundColor: 'grey',
-  //   borderRadius: 5,
-  // },
-  element: {
-    // backgroundColor: 'grey',
+  newGame: {
+    flex: 2,
   },
-
-  changeIcons: {
+  headersElements: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: 'center',
+  },
+  newGameContainer: {
+    flex: 1,
+    backgroundColor: '#1d8ed1'
+  },
+  showOptions: {
     paddingLeft: 10,
   },
   tile: {
@@ -34,43 +51,13 @@ var myStyles = React.StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  tileIcon: {
-    fontSize: 60,
-  },
-  tileX: {
-    color: "red",
-  },
-  tileO: {
-    color: "green",
-  },
-  topIcon: {
-    fontSize: 24,
-  },
   attemptsContainer: {
-    padding: 10,
+    paddingRight: 10,
   },
   attempts: {
     fontSize: 24,
     fontWeight: "bold"
   },
-  header: {
-    borderWidth: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: 'center',
-  },
-  newGame: {
-  },
-  question: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  questionText: {
-    fontSize: 18,
-    padding: 10,
-    fontWeight: 'bold',
-  },
-
 })
 
 module.exports = myStyles;

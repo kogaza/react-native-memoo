@@ -1,21 +1,14 @@
 import React, { Component } from 'react'
 import {
-  Text,
   View,
   TouchableOpacity,
-  Alert,
-  Button,
   Image,
-  ImageBackground,
   Animated,
   Easing
 } from 'react-native'
-
-
 var styles = require('./styles');
 
 export default class ShowImage extends Component {
-
   componentWillMount() {
     this.animatedFrontValue = new Animated.Value(0);
     this.animatedBackValue = new Animated.Value(0);
@@ -26,7 +19,6 @@ export default class ShowImage extends Component {
       this.value = value;
     })
   }
-
   flipCard(side, id) {
     if (side == 'reset') {
       Animated.timing(this.animatedFrontValue, {
@@ -94,7 +86,6 @@ export default class ShowImage extends Component {
       }).start();
     }
   }
-
   render() {
     const interpolateFrontColor = this.animatedFrontValue.interpolate({
       inputRange: [0, 150],
@@ -120,7 +111,6 @@ export default class ShowImage extends Component {
       opacity: interpolateBackColor,
       transform: [{ rotateY: spinBack }]
     }
-
     const {
       el,
       i,
@@ -133,33 +123,63 @@ export default class ShowImage extends Component {
       imagesType,
       newGame
     } = this.props;
-
     const colors = [
-      require('../../images/colors/redRectangle.png'),
-      require('../../images/colors/blueRectangle.png'),
-      require('../../images/colors/greenRectangle.png'),
-      require('../../images/colors/brownRectangle.png'),
-      require('../../images/colors/pinkRectangle.png'),
-      require('../../images/colors/yellowRectangle.png'),
+      require('../../images/colors/01.png'),
+      require('../../images/colors/02.png'),
+      require('../../images/colors/03.png'),
+      require('../../images/colors/04.png'),
+      require('../../images/colors/05.png'),
+      require('../../images/colors/06.png'),
+      require('../../images/colors/07.png'),
+      require('../../images/colors/08.png'),
+      require('../../images/colors/09.png'),
+      require('../../images/colors/10.png'),
+      require('../../images/colors/11.png'),
+      require('../../images/colors/12.png'),
     ]
     const fruits = [
-      require('../../images/fruits/apple.png'),
-      require('../../images/fruits/banana.png'),
-      require('../../images/fruits/grapefruit.png'),
-      require('../../images/fruits/grapes.png'),
-      require('../../images/fruits/strawberry.png'),
-      require('../../images/fruits/kiwi.png'),
-      require('../../images/fruits/mango.png'),
-      require('../../images/fruits/orange.png'),
-      require('../../images/fruits/kiwano.png'),
-      require('../../images/fruits/peach.png'),
-      require('../../images/fruits/pear.png'),
+      require('../../images/fruits/01.png'),
+      require('../../images/fruits/02.png'),
+      require('../../images/fruits/03.png'),
+      require('../../images/fruits/04.png'),
+      require('../../images/fruits/05.png'),
+      require('../../images/fruits/06.png'),
+      require('../../images/fruits/07.png'),
+      require('../../images/fruits/08.png'),
+      require('../../images/fruits/09.png'),
+      require('../../images/fruits/10.png'),
+      require('../../images/fruits/11.png'),
+      require('../../images/fruits/12.png'),
     ]
-
-    let images = (imagesType == 'fruits') ? fruits : colors;
-
+    const marks = [
+      require('../../images/marks/01.png'),
+      require('../../images/marks/02.png'),
+      require('../../images/marks/03.png'),
+      require('../../images/marks/04.png'),
+      require('../../images/marks/05.png'),
+      require('../../images/marks/06.png'),
+      require('../../images/marks/07.png'),
+      require('../../images/marks/08.png'),
+      require('../../images/marks/09.png'),
+      require('../../images/marks/10.png'),
+      require('../../images/marks/11.png'),
+      require('../../images/marks/12.png'),
+    ]
+    let images = [];
+    switch (imagesType) {
+      case 'fruits':
+        images = fruits;
+        break;
+      case 'colors':
+        images = colors;
+        break;
+      case 'marks':
+        images = marks;
+        break;
+      default:
+        break;
+    }
     let img = '';
-
     switch (imageId) {
       case 1:
         img = images[0]
@@ -179,6 +199,24 @@ export default class ShowImage extends Component {
       case 6:
         img = images[5]
         break;
+      case 7:
+        img = images[6]
+        break;
+      case 8:
+        img = images[7]
+        break;
+      case 9:
+        img = images[8]
+        break;
+      case 10:
+        img = images[9]
+        break;
+      case 11:
+        img = images[10]
+        break;
+      case 12:
+        img = images[11]
+        break;
       default:
         break;
     }
@@ -190,8 +228,6 @@ export default class ShowImage extends Component {
     (numberOfClicks == 1 && newGame) ?
       this.flipCard('reset')
       : null;
-
-
     let imageBack =
       <Image
         style={{
@@ -206,6 +242,7 @@ export default class ShowImage extends Component {
           width: width,
           height: height,
           resizeMode: 'contain',
+          backgroundColor:'white'
         }}
         source={img} />
     let field =
@@ -255,8 +292,6 @@ export default class ShowImage extends Component {
             margin: 2
           }}
         />
-
-
     return (
       <View>
         {field}
