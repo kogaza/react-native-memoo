@@ -19,6 +19,7 @@ export default class Home extends Component {
       newGame: false,
       elements: [],
       numberOfFields: 12,
+      numbersToMix: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
       levels: [
         {
           id: 0,
@@ -38,6 +39,7 @@ export default class Home extends Component {
       ],
       numberOfClicks: 0,
       attempts: 0,
+      time: 0,
       imagesType: 'fruits',
       show: 'game',
       icons: [
@@ -56,14 +58,30 @@ export default class Home extends Component {
           name: 'marks',
           img: require('../../images/icons/marks.png')
         },
-      ]
+      ],
     }
   }
   componentDidMount() {
     this.initializeGame();
   }
 
+  mixNumbers = () => {
+    let numbers = this.state.numbersToMix;
+    let position;
+    let el;
+    for (let i = 0; i < numbers.length; i++) {
+      position = Math.floor((Math.random() * numbers.length));
+      el = numbers.slice(position, position + 1)[0];
+      numbers.splice(position, 1);
+      numbers.push(el);
+    }
+    this.setState({
+      numbersToMix: numbers
+    })
+  }
+
   initializeGame = () => {
+    this.mixNumbers();
     const { numberOfFields } = this.state;
     let elements = [];
     let numbers = [];
@@ -180,7 +198,14 @@ export default class Home extends Component {
   render() {
     let widthEl = 0;
     let heightEl = 0;
-    const { numberOfClicks, imagesType, newGame, show, numberOfFields } = this.state;
+    const { 
+      numberOfClicks, 
+      imagesType, 
+      newGame, 
+      show, 
+      numberOfFields,
+      numbersToMix
+    } = this.state;
     switch (numberOfFields) {
       case 8:
         widthEl = 120;
@@ -210,6 +235,7 @@ export default class Home extends Component {
           visible={el.visible}
           clicked={el.clicked}
           numberOfClicks={numberOfClicks}
+          numbersToMix={numbersToMix}
           imagesType={imagesType}
           newGame={newGame}
           showImage={(id) => this.showImage(id)}

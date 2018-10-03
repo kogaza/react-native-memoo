@@ -121,7 +121,8 @@ export default class ShowImage extends Component {
       clicked,
       numberOfClicks,
       imagesType,
-      newGame
+      newGame,
+      numbersToMix
     } = this.props;
     const colors = [
       require('../../images/colors/01.png'),
@@ -182,40 +183,40 @@ export default class ShowImage extends Component {
     let img = '';
     switch (imageId) {
       case 1:
-        img = images[0]
+        img = images[numbersToMix[0]]
         break;
       case 2:
-        img = images[1]
+        img = images[numbersToMix[1]]
         break;
       case 3:
-        img = images[2]
+        img = images[numbersToMix[2]]
         break;
       case 4:
-        img = images[3]
+        img = images[numbersToMix[3]]
         break;
       case 5:
-        img = images[4]
+        img = images[numbersToMix[4]]
         break;
       case 6:
-        img = images[5]
+        img = images[numbersToMix[5]]
         break;
       case 7:
-        img = images[6]
+        img = images[numbersToMix[6]]
         break;
       case 8:
-        img = images[7]
+        img = images[numbersToMix[7]]
         break;
       case 9:
-        img = images[8]
+        img = images[numbersToMix[8]]
         break;
       case 10:
-        img = images[9]
+        img = images[numbersToMix[9]]
         break;
       case 11:
-        img = images[10]
+        img = images[numbersToMix[10]]
         break;
       case 12:
-        img = images[11]
+        img = images[numbersToMix[12]]
         break;
       default:
         break;
@@ -242,7 +243,7 @@ export default class ShowImage extends Component {
           width: width,
           height: height,
           resizeMode: 'contain',
-          backgroundColor:'white'
+          backgroundColor: 'white'
         }}
         source={img} />
     let field =

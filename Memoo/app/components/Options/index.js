@@ -15,6 +15,7 @@ export default class Options extends Component {
         {
           borderColor: '#1d8ed1',
           borderWidth: 4,
+          borderRadius: 5,
         }
         :
         null;
@@ -28,6 +29,7 @@ export default class Options extends Component {
               width: 80,
               height: 80,
               resizeMode: 'contain',
+              borderRadius: 5,
             }}
             source={icon.img} />
         </TouchableOpacity>
@@ -66,7 +68,7 @@ export default class Options extends Component {
         <View style={styles.choicePictures}>
           <View style={styles.question}>
             <Text style={styles.questionText}>
-              What pictures you want to play?
+              What pictures do you want to play?
           </Text>
           </View>
           <View style={styles.icons}>
