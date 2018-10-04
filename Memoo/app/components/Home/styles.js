@@ -6,7 +6,23 @@ var myStyles = React.StyleSheet.create({
     backgroundColor: "#1d8ed1",
     justifyContent: 'space-between'
   },
-
+  background: {
+    width: '100%',
+    height: '100%',
+  },
+  backgroundContainer: {
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  splashContainer: {
+    flex: 1,
+    width: 300,
+  },
+  splash: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   sidebar: {
     flex: 5,
   },

@@ -4,6 +4,9 @@ import {
   View,
   Alert,
   Button,
+  Image,
+  ImageBackground,
+  TouchableOpacity
 } from "react-native";
 import ShowImage from '../ShowImage';
 import Options from '../Options';
@@ -61,9 +64,10 @@ export default class Home extends Component {
       ],
     }
   }
-  componentDidMount() {
-    this.initializeGame();
-  }
+
+  // componentDidMount() {
+  //   this.initializeGame();
+  // }
 
   mixNumbers = () => {
     let numbers = this.state.numbersToMix;
@@ -198,11 +202,11 @@ export default class Home extends Component {
   render() {
     let widthEl = 0;
     let heightEl = 0;
-    const { 
-      numberOfClicks, 
-      imagesType, 
-      newGame, 
-      show, 
+    const {
+      numberOfClicks,
+      imagesType,
+      newGame,
+      show,
       numberOfFields,
       numbersToMix
     } = this.state;
@@ -296,22 +300,61 @@ export default class Home extends Component {
 
 
     return (
-      <View style={styles.container}>
-        <View style={styles.sidebar}>
-          <Sidebar />
-        </View>
-        <View style={styles.header}>
-          {header}
-        </View>
-        <View style={styles.mainField}>
-          {mainField}
+      // <View style={styles.container}>
+      //   <View style={styles.sidebar}>
+      //     <Sidebar />
+      //   </View>
+      //   <View style={styles.header}>
+      //     {header}
+      //   </View>
+      //   <View style={styles.mainField}>
+      //     {mainField}
 
+      //   </View>
+      //   <View style={styles.newGame}>
+      //     {newGameButton}
+      //   </View>
+      // </View>
+      <ImageBackground
+        style={styles.background}
+        source={require('../../images/background.jpg')}
+      >
+        <View style={styles.backgroundContainer}>
+          <Image
+            style={{
+              width: '100%',
+              resizeMode: 'contain',
+              flex: 1
+            }}
+            source={require('../../images/stars.png')} />
+          <Image
+            style={{
+              resizeMode: 'contain',
+              flex: 1,
+              transform: [{ scale: 0.7 }]
+            }}
+            source={require('../../images/memoo-logo.png')} />
+          <TouchableOpacity style={styles.splashContainer}>
+            <Image
+              style={[styles.background, styles.splash]}
+              source={require('../../images/splashT1.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.splashContainer}>
+            <Image
+              style={[styles.background, styles.splash]}
+              source={require('../../images/splashT2.png')} />
+          </TouchableOpacity>
+          <Image
+            source={require('../../images/stars.png')}
+            style={{
+              width: '100%',
+              resizeMode: 'contain',
+              flex: 1,
+              transform: [{ rotate: '180deg' }]
+            }} />
         </View>
-        <View style={styles.newGame}>
-          {newGameButton}
-        </View>
-      </View>
 
+      </ImageBackground>
     );
   }
 }
