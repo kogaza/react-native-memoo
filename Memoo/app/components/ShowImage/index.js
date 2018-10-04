@@ -216,7 +216,7 @@ export default class ShowImage extends Component {
         img = images[numbersToMix[10]]
         break;
       case 12:
-        img = images[numbersToMix[12]]
+        img = images[numbersToMix[11]]
         break;
       default:
         break;
@@ -243,7 +243,7 @@ export default class ShowImage extends Component {
           width: width,
           height: height,
           resizeMode: 'contain',
-          backgroundColor: 'white'
+
         }}
         source={img} />
     let field =

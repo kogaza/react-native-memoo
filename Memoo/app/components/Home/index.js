@@ -11,6 +11,8 @@ import {
 import ShowImage from '../ShowImage';
 import Options from '../Options';
 import Sidebar from "../Sidebar";
+import { LinearGradient } from 'expo';
+
 
 var styles = require('./styles');
 
@@ -19,6 +21,7 @@ export default class Home extends Component {
     super(props);
 
     this.state = {
+      window: 'start',
       newGame: false,
       elements: [],
       numberOfFields: 12,
@@ -65,9 +68,9 @@ export default class Home extends Component {
     }
   }
 
-  // componentDidMount() {
-  //   this.initializeGame();
-  // }
+  componentDidMount() {
+    this.initializeGame();
+  }
 
   mixNumbers = () => {
     let numbers = this.state.numbersToMix;
@@ -125,7 +128,7 @@ export default class Home extends Component {
 
   onNewGamePress = () => {
     Alert.alert(
-      'You want to end this game?',
+      'You want to end this game',
       `Are you sure?`,
       [
         { text: 'Yes', onPress: () => this.resetGame() },
@@ -177,13 +180,24 @@ export default class Home extends Component {
       numberOfClicks: numberOfClicks + 1
     }, () => this.hideElements())
   }
-
   showOptions = (arg) => {
     let show = arg;
-    (show == 'game') ? this.initializeGame() : null;
+    (show == 'start') ? this.initializeGame() : null;
     this.setState({
       show
     })
+  }
+
+  showOptionsPress = (arg) => {
+    Alert.alert(
+      'You want to end this game',
+      `Are you sure?`,
+      [
+        { text: 'Yes', onPress: () => this.showOptions(arg) },
+        { text: 'No', onPress: () => console.log() },
+      ],
+      { cancelable: false }
+    )
   }
 
   changeImages = (icon) => {
@@ -197,6 +211,35 @@ export default class Home extends Component {
     this.setState({
       numberOfFields
     })
+  }
+
+  backToStart = () => {
+    (this.state.show == 'game') ?
+      Alert.alert(
+        'You want to end this game',
+        `Are you sure?`,
+        [
+          { text: 'Yes', onPress: () => this.showContent('start') },
+          { text: 'No', onPress: () => console.log() },
+        ],
+        { cancelable: false }
+
+      )
+      :
+      this.showContent('start')
+  }
+
+  showContent = (content) => {
+    (content == 'game') ? this.initializeGame() : null;
+    (content == 'options' || content == 'game') ?
+      this.setState({
+        window: content,
+        show: content
+      })
+      :
+      this.setState({
+        window: content
+      })
   }
 
   render() {
@@ -262,11 +305,22 @@ export default class Home extends Component {
 
     const header = (show == 'game') ?
       <View style={styles.headersElements}>
+        <LinearGradient
+          colors={['transparent','#1d8ed1']}
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            height: 100,
+          }}
+        />
         <View style={styles.showOptions}>
           <Button
             title="Show options"
-            onPress={() => this.showOptions('options')}
+            onPress={() => this.showOptionsPress('options')}
             color="#1d8ed1"
+            width={200}
           ></Button>
         </View>
         <View style={styles.attemptsContainer}>
@@ -277,11 +331,22 @@ export default class Home extends Component {
       </View>
       :
       <View style={styles.headersElements}>
+      <LinearGradient
+          colors={['transparent','#1d8ed1']}
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            height: 100,
+          }}
+        />
         <View style={styles.showOptions}>
           <Button
-            title="Back to game"
-            onPress={() => this.showOptions('game')}
+            title="Save"
+            onPress={() => this.showContent('start')}
             color="#1d8ed1"
+            width={200}
           ></Button>
         </View>
         <View style={styles.attemptsContainer}></View>
@@ -297,63 +362,75 @@ export default class Home extends Component {
       :
       <View style={styles.newGameContainer}>
       </View>
+    const start =
+      <View style={styles.startContainer}>
+        <Image
+          style={{
+            width: '100%',
+            resizeMode: 'contain',
+            flex: 1
+          }}
+          source={require('../../images/stars.png')} />
+        <Image
+          style={{
+            resizeMode: 'contain',
+            flex: 1,
+            transform: [{ scale: 0.7 }]
+          }}
+          source={require('../../images/memoo-logo.png')} />
+        <TouchableOpacity
+          style={styles.splashContainer}
+          onPress={() => this.showContent('game')}
+        >
+          <Image
+            style={[styles.background, styles.splash]}
+            source={require('../../images/splashT1.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.splashContainer}
+          onPress={() => this.showContent('options')}
+        >
+          <Image
+            style={[styles.background, styles.splash]}
+            source={require('../../images/splashT2.png')} />
+        </TouchableOpacity>
+        <Image
+          source={require('../../images/stars.png')}
+          style={{
+            width: '100%',
+            resizeMode: 'contain',
+            flex: 1,
+            transform: [{ rotate: '180deg' }]
+          }} />
+      </View>
+    const home =
+      <View style={styles.container}>
+        <View style={styles.sidebar}>
+          <Sidebar
+            backToStart={(content) => this.backToStart(content)}
+          />
+        </View>
+        <View style={styles.header}>
+          {header}
+        </View>
+        <View style={styles.mainField}>
+          {mainField}
 
+        </View>
+        <View style={styles.newGame}>
+          {newGameButton}
+        </View>
+      </View>
 
     return (
-      // <View style={styles.container}>
-      //   <View style={styles.sidebar}>
-      //     <Sidebar />
-      //   </View>
-      //   <View style={styles.header}>
-      //     {header}
-      //   </View>
-      //   <View style={styles.mainField}>
-      //     {mainField}
-
-      //   </View>
-      //   <View style={styles.newGame}>
-      //     {newGameButton}
-      //   </View>
-      // </View>
       <ImageBackground
         style={styles.background}
-        source={require('../../images/background.jpg')}
-      >
-        <View style={styles.backgroundContainer}>
-          <Image
-            style={{
-              width: '100%',
-              resizeMode: 'contain',
-              flex: 1
-            }}
-            source={require('../../images/stars.png')} />
-          <Image
-            style={{
-              resizeMode: 'contain',
-              flex: 1,
-              transform: [{ scale: 0.7 }]
-            }}
-            source={require('../../images/memoo-logo.png')} />
-          <TouchableOpacity style={styles.splashContainer}>
-            <Image
-              style={[styles.background, styles.splash]}
-              source={require('../../images/splashT1.png')} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.splashContainer}>
-            <Image
-              style={[styles.background, styles.splash]}
-              source={require('../../images/splashT2.png')} />
-          </TouchableOpacity>
-          <Image
-            source={require('../../images/stars.png')}
-            style={{
-              width: '100%',
-              resizeMode: 'contain',
-              flex: 1,
-              transform: [{ rotate: '180deg' }]
-            }} />
+        source={require('../../images/background.jpg')} >
+        <View style={{ flex: 1 }}>
+          {
+            (this.state.window == 'start') ? start : home
+          }
         </View>
-
       </ImageBackground>
     );
   }

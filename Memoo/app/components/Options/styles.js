@@ -3,7 +3,7 @@ var React = require('react-native');
 var myStyles = React.StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   question: {
     justifyContent: 'center'
@@ -11,14 +11,14 @@ var myStyles = React.StyleSheet.create({
   icons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    
   },
   questionText: {
     fontSize: 18,
     padding: 10,
     paddingBottom: 25,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    color: 'white'
   },
   levelContainer: {
     flexDirection: 'row',

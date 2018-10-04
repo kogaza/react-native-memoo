@@ -5,13 +5,14 @@ var myStyles = React.StyleSheet.create({
         justifyContent: 'center',
     },
     box: {
-        backgroundColor: '#d3f2ff',
+        backgroundColor: 'white',
         borderRadius: 10
     },
     flipCardBack: {
         backgroundColor: '#eaf9ff',
         position: 'absolute',
         top: 0,
+
     },
 
 })
