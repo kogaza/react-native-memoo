@@ -47,6 +47,7 @@ export default class Home extends Component {
       attempts: 0,
       time: 0,
       imagesType: 'fruits',
+      flag: 'poland',
       show: 'game',
       icons: [
         {
@@ -65,11 +66,51 @@ export default class Home extends Component {
           img: require('../../images/icons/marks.png')
         },
       ],
+      language: [
+        {
+          id: 0,
+          name: 'britain',
+          img: require('../../images/flags/BritainFlag.png')
+        },
+        {
+          id: 1,
+          name: 'poland',
+          img: require('../../images/flags/PolandFlag.png')
+        },
+        {
+          id: 2,
+          name: 'croatia',
+          img: require('../../images/flags/CroatiaFlag.png')
+        },
+      ],
+      texts: [],
+      optionsButton: '',
+      newgameButton: '',
+      saveButton: '',
+      textIndex: 0,
+      startTexts: [
+        {
+          id: 1,
+          newGame: require('../../images/nowaGra.png'),
+          settings: require('../../images/opcjeGry.png')
+        },
+        {
+          id: 2,
+          newGame: require('../../images/newGame.png'),
+          settings: require('../../images/settings.png')
+        },
+        {
+          id: 3,
+          newGame: require('../../images/novaIgra.png'),
+          settings: require('../../images/opcijeIgre.png')
+        }
+      ],
     }
   }
 
   componentDidMount() {
     this.initializeGame();
+    this.translate();
   }
 
   mixNumbers = () => {
@@ -127,48 +168,69 @@ export default class Home extends Component {
   }
 
   onNewGamePress = () => {
+    const { texts } = this.state;
     Alert.alert(
-      'You want to end this game',
-      `Are you sure?`,
+      texts[10],
+      texts[11],
       [
-        { text: 'Yes', onPress: () => this.resetGame() },
-        { text: 'No', onPress: () => console.log() },
+        { text: texts[14], onPress: () => this.resetGame() },
+        { text: texts[15], onPress: () => console.log() },
       ],
       { cancelable: false }
     )
   }
 
   hideElements = () => {
-    const { numberOfClicks, elements, attempts } = this.state;
+    const { numberOfClicks, elements, attempts, texts } = this.state;
     if (numberOfClicks >= 2) {
-      setTimeout(() => {
-        let newElements = elements.map(x => {
-          return {
-            ...x,
-            clicked: false
-          };
-        });
-        let clickedElements = elements.filter(x => x.clicked == true);
-        if (clickedElements && clickedElements[0].imageId == clickedElements[1].imageId) {
+      let clickedElements = elements.filter(x => x.clicked == true);
+      let newElements = elements.map(x => {
+        return {
+          ...x,
+          clicked: false
+        };
+      });
+      if (clickedElements &&
+        clickedElements[0].imageId == clickedElements[1].imageId) {
+        setTimeout(() => {
           newElements[clickedElements[0].id - 1].visible = false;
           newElements[clickedElements[1].id - 1].visible = false;
-        }
-        if (newElements.filter(x => x.visible == true).length <= 0) {
-          Alert.alert(
-            'You are the winner!',
-            `Your result is ${this.state.attempts + 1} attempts`,
-            [
-              { text: 'OK', onPress: () => this.initializeGame() },
-            ],
-            { cancelable: false }
-          )
-        };
-        this.setState({
-          elements: newElements,
-          numberOfClicks: 0,
-          attempts: attempts + 1
-        })
-      }, 1500);
+          if (newElements.filter(x => x.visible == true).length <= 0) {
+            Alert.alert(
+              texts[12],
+              `${texts[13]} ${this.state.attempts + 1}`,
+              [
+                { text: 'OK', onPress: () => this.initializeGame() },
+              ],
+              { cancelable: false }
+            )
+          };
+          this.setState({
+            elements: newElements,
+            numberOfClicks: 0,
+            attempts: attempts + 1
+          })
+        }, 500);
+      }
+      else {
+        setTimeout(() => {
+          if (newElements.filter(x => x.visible == true).length <= 0) {
+            Alert.alert(
+              texts[12],
+              `${texts[13]} ${this.state.attempts + 1}`,
+              [
+                { text: 'OK', onPress: () => this.initializeGame() },
+              ],
+              { cancelable: false }
+            )
+          };
+          this.setState({
+            elements: newElements,
+            numberOfClicks: 0,
+            attempts: attempts + 1
+          })
+        }, 1500);
+      }
     }
   }
 
@@ -189,12 +251,13 @@ export default class Home extends Component {
   }
 
   showOptionsPress = (arg) => {
+    const { texts } = this.state;
     Alert.alert(
-      'You want to end this game',
-      `Are you sure?`,
+      texts[10],
+      texts[11],
       [
-        { text: 'Yes', onPress: () => this.showOptions(arg) },
-        { text: 'No', onPress: () => console.log() },
+        { text: texts[14], onPress: () => this.showOptions(arg) },
+        { text: texts[15], onPress: () => console.log() },
       ],
       { cancelable: false }
     )
@@ -212,15 +275,111 @@ export default class Home extends Component {
       numberOfFields
     })
   }
+  translate = () => {
+    const pol = [
+      'Wybierz obrazki',
+      'Poziom trudności',
+      'Język',
+      'Pokaż opcje',
+      'Liczba prób',
+      'Nowa gra', // 5
+      'Zapisz',
+      'Łatwy',
+      'Średni',
+      'Trudny',
+      'Chcesz zakończyć grę!', // 10
+      'Jesteś tego pewien?',
+      'Jesteś zwycięzcą!',
+      'Twój wynik to: ',
+      'Tak',
+      'Nie', // 15
 
+    ];
+    const ang = [
+      'Choose pictures',
+      'Difficulty level',
+      'Language',
+      'Show options',
+      'Attempts',
+      'New game', // 5
+      'Save',
+      'Easy',
+      'Medium',
+      'Hard',
+      'You want to end this game!', // 10
+      'Are you sure?',
+      'You are the winner!',
+      'Your result is: ',
+      'Yes',
+      'No', // 15
+
+    ];
+    const cro = [
+      'Odaberite slike',
+      'Razina težine',
+      'Jezik',
+      'Prikaz opcija',
+      'Broj pokušaja',
+      'Nova igra', // 5
+      'Spremi',
+      'Lako',
+      'Srednja',
+      'Teška',
+      'Želite okončati igru', // 10
+      'Jeste li sigurni u to?',
+      'Vi ste pobjednik!',
+      'Vaš rezultat je: ',
+      'Tako',
+      'Nije', // 15
+
+    ];
+    const { flag, levels } = this.state;
+    let texts = '';
+    let textIndex = 0;
+    switch (flag) {
+      case 'poland':
+        texts = pol;
+        textIndex = 0;
+        break;
+      case 'britain':
+        texts = ang;
+        textIndex = 1;
+        break;
+      case 'croatia':
+        texts = cro;
+        textIndex = 2;
+        break;
+      default:
+        break;
+    }
+    levels[0].name = texts[7];
+    levels[1].name = texts[8];
+    levels[2].name = texts[9];
+
+    this.setState({
+      texts,
+      textIndex,
+      optionsButton: texts[3],
+      newgameButton: texts[5],
+      saveButton: texts[6],
+      levels,
+    })
+  }
+  changeLanguage = (lang) => {
+    let flag = lang;
+    this.setState({
+      flag
+    }, () => this.translate())
+  }
   backToStart = () => {
+    const { texts } = this.state;
     (this.state.show == 'game') ?
       Alert.alert(
-        'You want to end this game',
-        `Are you sure?`,
+        texts[10],
+        texts[11],
         [
-          { text: 'Yes', onPress: () => this.showContent('start') },
-          { text: 'No', onPress: () => console.log() },
+          { text: texts[14], onPress: () => this.showContent('start') },
+          { text: texts[15], onPress: () => console.log() },
         ],
         { cancelable: false }
 
@@ -251,7 +410,13 @@ export default class Home extends Component {
       newGame,
       show,
       numberOfFields,
-      numbersToMix
+      numbersToMix,
+      texts,
+      optionsButton,
+      newgameButton,
+      saveButton,
+      startTexts,
+      textIndex,
     } = this.state;
     switch (numberOfFields) {
       case 8:
@@ -297,16 +462,20 @@ export default class Home extends Component {
       <Options
         changeImages={(icon) => this.changeImages(icon)}
         changeLevel={(level) => this.changeLevel(level)}
+        changeLanguage={(lang) => this.changeLanguage(lang)}
         icons={this.state.icons}
         imagesType={this.state.imagesType}
         numberOfFields={this.state.numberOfFields}
         levels={this.state.levels}
+        language={this.state.language}
+        flag={this.state.flag}
+        texts={this.state.texts}
       />
 
     const header = (show == 'game') ?
       <View style={styles.headersElements}>
         <LinearGradient
-          colors={['transparent','#1d8ed1']}
+          colors={['transparent', '#1d8ed1']}
           style={{
             position: 'absolute',
             left: 0,
@@ -317,7 +486,7 @@ export default class Home extends Component {
         />
         <View style={styles.showOptions}>
           <Button
-            title="Show options"
+            title={optionsButton}
             onPress={() => this.showOptionsPress('options')}
             color="#1d8ed1"
             width={200}
@@ -325,14 +494,14 @@ export default class Home extends Component {
         </View>
         <View style={styles.attemptsContainer}>
           <Text style={styles.attempts}>
-            Attempts: {this.state.attempts}
+            {texts[4]}: {this.state.attempts}
           </Text>
         </View>
       </View>
       :
       <View style={styles.headersElements}>
-      <LinearGradient
-          colors={['transparent','#1d8ed1']}
+        <LinearGradient
+          colors={['transparent', '#1d8ed1']}
           style={{
             position: 'absolute',
             left: 0,
@@ -343,7 +512,7 @@ export default class Home extends Component {
         />
         <View style={styles.showOptions}>
           <Button
-            title="Save"
+            title={saveButton}
             onPress={() => this.showContent('start')}
             color="#1d8ed1"
             width={200}
@@ -354,14 +523,13 @@ export default class Home extends Component {
     const newGameButton = (show == 'game') ?
       <View style={styles.newGameContainer}>
         <Button
-          title='New Game'
+          title={newgameButton}
           onPress={this.onNewGamePress}
           color="#1d8ed1"
         />
       </View>
       :
-      <View style={styles.newGameContainer}>
-      </View>
+      <View style={styles.newGameContainer} />
     const start =
       <View style={styles.startContainer}>
         <Image
@@ -384,7 +552,7 @@ export default class Home extends Component {
         >
           <Image
             style={[styles.background, styles.splash]}
-            source={require('../../images/splashT1.png')} />
+            source={startTexts[textIndex].newGame} />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.splashContainer}
@@ -392,7 +560,7 @@ export default class Home extends Component {
         >
           <Image
             style={[styles.background, styles.splash]}
-            source={require('../../images/splashT2.png')} />
+            source={startTexts[textIndex].settings} />
         </TouchableOpacity>
         <Image
           source={require('../../images/stars.png')}

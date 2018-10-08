@@ -10,7 +10,8 @@ var myStyles = React.StyleSheet.create({
   },
   icons: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
+    paddingBottom: 20
   },
   questionText: {
     fontSize: 18,
@@ -26,7 +27,7 @@ var myStyles = React.StyleSheet.create({
     paddingBottom: 30,
   },
   level: {
-    padding: 10,
+    padding: 5,
     backgroundColor: '#d3f2ff',
     justifyContent: 'center',
     borderRadius: 5,

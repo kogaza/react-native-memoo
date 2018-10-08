@@ -27,8 +27,8 @@ var myStyles = React.StyleSheet.create({
     flex: 5,
   },
   header: {
-    flex: 4,
-    borderBottomWidth: 3,
+    flex: 3,
+    borderBottomWidth: 1,
     borderColor: '#1d8ed1',
     // backgroundColor: "rgba(255, 254, 180, 0.6)",
   },
